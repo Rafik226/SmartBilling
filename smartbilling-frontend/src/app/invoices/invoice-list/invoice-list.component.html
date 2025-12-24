@@ -1,0 +1,6 @@
+<div class="invoice-list">
+  <h3>Factures</h3>
+  <ul>
+    <li *ngFor="let inv of invoices">{{ inv.reference }} — {{ inv.total | currency }}</li>
+  </ul>
+</div>
