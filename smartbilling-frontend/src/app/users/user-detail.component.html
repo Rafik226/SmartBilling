@@ -1,0 +1,28 @@
+<section class="px-6 py-8">
+  <div class="max-w-xl mx-auto bg-white shadow rounded-xl p-8">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-4">
+        <div class="h-14 w-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl text-blue-700 font-bold border-2 border-blue-200 shadow">
+          {{ (user.username || '?').charAt(0).toUpperCase() }}
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold text-blue-700">{{ user.username }}</h1>
+          <div class="text-base text-gray-500">{{ user.email }}</div>
+        </div>
+      </div>
+      <div>
+        <span *ngIf="user.status === 'actif'" class="inline-block px-2 py-1 text-xs rounded bg-green-100 text-green-700">Actif</span>
+        <span *ngIf="user.status === 'inactif'" class="inline-block px-2 py-1 text-xs rounded bg-gray-200 text-gray-700">Inactif</span>
+      </div>
+    </div>
+    <hr class="my-4" />
+    <div>
+      <div class="mb-2"><span class="font-medium text-gray-700">Rôles :</span> <span class="text-gray-800">{{ user.roles.join(', ') }}</span></div>
+    </div>
+    <div class="flex gap-4 justify-end mt-8">
+      <button (click)="back()" class="px-6 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-100 transition">Retour</button>
+      <button (click)="edit()" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition">Éditer</button>
+    </div>
+  </div>
+</section>
+

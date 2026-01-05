@@ -1,0 +1,51 @@
+<section class="px-6 py-8">
+  <div class="max-w-4xl mx-auto bg-white shadow rounded-xl p-8">
+    <div *ngIf="invoice; else loading">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h1 class="text-3xl font-bold text-blue-700 flex items-center gap-2">
+            Facture <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-lg">{{ invoice.reference }}</span>
+          </h1>
+          <div class="text-base text-gray-500 mt-1">Client : <span class="font-semibold text-blue-700">{{ invoice.client?.name }}</span></div>
+        </div>
+        <div class="space-x-2">
+          <button (click)="edit()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition">Éditer</button>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-6 mb-6 mt-2">
+        <div class="bg-blue-50 rounded-lg px-4 py-2 text-blue-700 font-semibold">Date : {{ invoice.invoiceDate | date:'dd/MM/yyyy' }}</div>
+        <div class="bg-blue-50 rounded-lg px-4 py-2 text-blue-700 font-semibold">Total : {{ invoice.total | number:'1.0-0' }} FCFA</div>
+      </div>
+      <hr class="my-4" />
+      <div>
+        <h2 class="font-semibold text-lg mb-2">Lignes de facture</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-50">
+              <tr class="text-left text-xs text-blue-700 uppercase">
+                <th class="py-2 px-3">Description</th>
+                <th class="py-2 px-3">Quantité</th>
+                <th class="py-2 px-3">P.U. (FCFA)</th>
+                <th class="py-2 px-3">Total ligne (FCFA)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let it of invoice.items" class="hover:bg-blue-50">
+                <td class="py-2 px-3">{{ it.description }}</td>
+                <td class="py-2 px-3">{{ it.quantity }}</td>
+                <td class="py-2 px-3">{{ it.unitPrice | number:'1.0-0' }}</td>
+                <td class="py-2 px-3 font-semibold">{{ (it.lineTotal ?? ((it.quantity ?? 0) * (it.unitPrice ?? 0))) | number:'1.0-0' }} FCFA</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mt-6 text-right">
+        <span class="text-xl font-bold text-blue-700">Total à payer : {{ invoice.total | number:'1.0-0' }} FCFA</span>
+      </div>
+    </div>
+    <ng-template #loading>
+      <div>Chargement...</div>
+    </ng-template>
+  </div>
+</section>

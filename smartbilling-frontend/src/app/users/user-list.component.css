@@ -1,0 +1,11 @@
+/* Styles personnalisés pour la liste des utilisateurs, à compléter si besoin. */
+
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

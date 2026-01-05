@@ -1,0 +1,57 @@
+<section class="px-6 py-8">
+  <div class="max-w-2xl mx-auto bg-white shadow rounded-xl p-8">
+    <h2 class="text-2xl font-bold mb-6 text-blue-700">{{ model.id ? 'Modifier la facture' : 'Nouvelle facture' }}</h2>
+    <form (ngSubmit)="save()" #f="ngForm" class="space-y-6">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Client</label>
+        <div class="relative client-typeahead">
+          <input type="text" [(ngModel)]="searchTerm" name="searchClient" (input)="onSearchChange(searchTerm)" class="w-full border border-blue-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition" placeholder="Rechercher un client..." autocomplete="off" />
+          <ul *ngIf="showClientDropdown && filteredClients.length" class="absolute z-50 bg-white border w-full mt-1 max-h-56 overflow-auto rounded shadow">
+            <li *ngFor="let c of filteredClients" (click)="selectClient(c)" class="px-4 py-2 hover:bg-blue-50 cursor-pointer">{{ c.name }} <span class="text-xs text-gray-400">{{ c.company }}</span></li>
+          </ul>
+        </div>
+        <div *ngIf="model.client" class="mt-2 text-sm text-blue-700">Client sélectionné : <b>{{ model.client.name }}</b></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Date</label>
+          <input type="date" [(ngModel)]="model.invoiceDate" name="invoiceDate" class="w-full border border-blue-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition" required />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Référence</label>
+          <input [(ngModel)]="model.reference" name="reference" class="w-full border border-blue-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition" placeholder="Référence facture" required />
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Lignes de facture</label>
+        <div class="space-y-2">
+          <div *ngFor="let l of model.items; let i = index" class="grid grid-cols-1 md:grid-cols-4 gap-2 items-end bg-blue-50/50 rounded-lg p-2">
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">Description</label>
+              <input [(ngModel)]="l.description" name="desc{{i}}" class="border border-blue-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-full" placeholder="Ex: Prestation, produit..." required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">Quantité</label>
+              <input type="number" min="1" [(ngModel)]="l.quantity" name="qty{{i}}" class="border border-blue-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-full" placeholder="Qté" required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">Prix unitaire (FCFA)</label>
+              <input type="number" min="0" [(ngModel)]="l.unitPrice" name="pu{{i}}" class="border border-blue-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-full" placeholder="Prix unitaire" required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">Total ligne (FCFA)</label>
+              <input type="number" [value]="(l.quantity ?? 0) * (l.unitPrice ?? 0)" class="border border-blue-200 rounded-lg px-3 py-2 bg-gray-50 w-full" placeholder="Total (FCFA)" readonly />
+            </div>
+          </div>
+        </div>
+        <button type="button" (click)="addLine()" class="mt-3 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">+ Ajouter une ligne</button>
+      </div>
+      <div class="flex justify-end items-center gap-4 mt-6">
+        <span class="text-lg font-bold text-gray-700">Total : {{ model.total }} FCFA</span>
+        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition">Enregistrer</button>
+        <button type="button" (click)="cancel()" class="px-6 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-100 transition">Annuler</button>
+      </div>
+    </form>
+  </div>
+</section>
+
