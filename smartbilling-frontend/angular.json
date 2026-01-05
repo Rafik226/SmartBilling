@@ -1,9 +1,13 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": false
+  },
   "newProjectRoot": "projects",
   "projects": {
-    "smartbilling-frontend": {
+    "SmartBilling-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -23,12 +27,7 @@
             ],
             "styles": [
               "src/styles.css"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
@@ -58,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "smartbilling-frontend:build:production"
+              "buildTarget": "SmartBilling-frontend:build:production"
             },
             "development": {
-              "buildTarget": "smartbilling-frontend:build:development"
+              "buildTarget": "SmartBilling-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,8 +70,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

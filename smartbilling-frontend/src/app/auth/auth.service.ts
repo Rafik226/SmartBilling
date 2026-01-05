@@ -1,31 +1,47 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { AuthRequest, AuthResponse } from '../shared/models/auth.model';
+import { decodeJwt } from './jwt.util';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private base = '/api/auth';
+  private apiUrl = 'http://localhost:8080/api/auth';
+  private userSignal = signal<any | null>(this.getUserFromToken());
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Promise<string | null> {
-    const body: AuthRequest = { username, password };
-    return this.http.post<AuthResponse>(`${this.base}/login`, body).toPromise().then(res => {
-      const token = res?.token || null;
-      if (token) localStorage.setItem('auth_token', token);
-      return token;
+  login(request: AuthRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
 
-  logout(): void {
-    localStorage.removeItem('auth_token');
+  saveToken(token: string) {
+    localStorage.setItem('token', token);
+    this.userSignal.set(this.getUserFromToken());
   }
 
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return localStorage.getItem('token');
   }
 
-  isAuthenticated(): boolean {
-    return !!this.getToken();
+  logout() {
+    localStorage.removeItem('token');
+    this.userSignal.set(null);
+  }
+
+  getUserFromToken() {
+    const token = this.getToken();
+    if (!token) return null;
+    return decodeJwt(token);
+  }
+
+  currentUser$() {
+    return computed(() => this.userSignal());
+  }
+
+  get currentUserValue() {
+    return this.userSignal();
   }
 }
