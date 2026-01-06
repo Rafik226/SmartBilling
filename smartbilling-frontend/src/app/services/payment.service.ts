@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { PaymentResponse, PaymentRequest } from '../shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api';
+  private apiUrl = `${environment.apiBase}`;
 
   constructor(private http: HttpClient) {}
 

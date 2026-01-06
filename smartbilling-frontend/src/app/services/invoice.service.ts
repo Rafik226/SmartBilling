@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { InvoiceResponse, InvoiceRequest } from '../shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceService {
-  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api/invoices';
+  private apiUrl = `${environment.apiBase}/invoices`;
 
   constructor(private http: HttpClient) {}
 

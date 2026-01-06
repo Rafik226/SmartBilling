@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { User, UserCreateDto } from '../shared/models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserApiService {
-  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api/users';
+  private apiUrl = `${environment.apiBase}/users`;
 
   constructor(private http: HttpClient) {}
 

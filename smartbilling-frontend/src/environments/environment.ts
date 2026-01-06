@@ -1,0 +1,4 @@
+export const environment = {
+  production: false,
+  apiBase: 'https://morning-river-09236-d916246857b3.herokuapp.com/api'
+};
