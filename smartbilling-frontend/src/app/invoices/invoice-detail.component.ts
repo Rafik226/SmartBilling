@@ -30,11 +30,9 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   loadInvoice(id: string) {
-    console.log('Loading invoice...', id);
     this.error = null;
     this.invoiceService.getById(id).subscribe({
       next: (inv) => {
-        console.log('Invoice loaded:', inv);
         this.invoice = inv;
         this.calculateBalances();
         // ensure Angular updates view after processing

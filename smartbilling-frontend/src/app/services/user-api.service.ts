@@ -5,7 +5,7 @@ import { User, UserCreateDto } from '../shared/models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserApiService {
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api/users';
 
   constructor(private http: HttpClient) {}
 

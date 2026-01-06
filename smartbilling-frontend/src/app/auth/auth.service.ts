@@ -6,7 +6,7 @@ import { decodeJwt } from './jwt.util';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api/auth';
   private userSignal = signal<any | null>(this.getUserFromToken());
 
   constructor(private http: HttpClient) {}

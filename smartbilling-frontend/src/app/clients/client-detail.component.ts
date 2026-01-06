@@ -22,7 +22,6 @@ export class ClientDetailComponent implements OnInit {
     if (this.id) {             
       this.clientService.getById(this.id).subscribe({
         next: (c) => {
-          console.log('Client loaded:', c);
           this.client = c;
         },
         error: (err) => {

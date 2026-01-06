@@ -21,19 +21,17 @@ export class InvoiceListComponent implements OnInit {
   }
 
   openInvoice(id?: string) {
-    console.log('openInvoice called', id);
     if (!id) return;
     this.router.navigateByUrl(`/invoices/${id}`);
   }
 
   edit(id?: string) {
-    console.log('edit invoice', id);
+    if (!id) return;
     if (!id) return;
     this.router.navigateByUrl(`/invoices/${id}/edit`);
   }
 
   create() {
-    console.log('create invoice');
     this.router.navigateByUrl('/invoices/new');
   }
 }

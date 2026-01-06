@@ -5,7 +5,7 @@ import { PaymentResponse, PaymentRequest } from '../shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api';
 
   constructor(private http: HttpClient) {}
 

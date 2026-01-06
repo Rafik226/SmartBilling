@@ -5,7 +5,7 @@ import { InvoiceResponse, InvoiceRequest } from '../shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceService {
-  private apiUrl = 'http://localhost:8080/api/invoices';
+  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api/invoices';
 
   constructor(private http: HttpClient) {}
 

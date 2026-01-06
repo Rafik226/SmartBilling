@@ -20,7 +20,6 @@ export class ClientListComponent implements OnInit {
     this.clientService.getAll().subscribe({
       next: (c) => {
         this.clients = c;
-        console.log('Clients loaded:', c);
       },
       error: (err) => {
         console.error('Failed to load clients', err);
@@ -29,19 +28,17 @@ export class ClientListComponent implements OnInit {
   }
 
   viewClient(id?: string) {
-    console.log('viewClient', id);
     if (!id) return;
     this.router.navigate(['/clients', id]);
   }
 
   edit(id?: string) {
-    console.log('edit client', id);
     if (!id) return;
     this.router.navigate(['/clients', id, 'edit']);
   }
 
   create() {
-    console.log('create client');
+    this.router.navigate(['/clients', 'new']);
     this.router.navigate(['/clients', 'new']);
   }
 

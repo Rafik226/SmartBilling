@@ -5,7 +5,7 @@ import { ClientResponse, ClientRequest } from '../shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
-  private apiUrl = 'http://localhost:8080/api/clients';
+  private apiUrl = 'https://morning-river-09236-d916246857b3.herokuapp.com/api/clients';
 
   constructor(private http: HttpClient) {}
 
