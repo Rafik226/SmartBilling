@@ -21,11 +21,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final ClientRepository clientRepository;
     private final InvoiceMapper invoiceMapper;
+    private final com.example.smartbilling.mapper.LineItemMapper lineItemMapper;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, ClientRepository clientRepository, InvoiceMapper invoiceMapper) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, ClientRepository clientRepository, InvoiceMapper invoiceMapper, com.example.smartbilling.mapper.LineItemMapper lineItemMapper) {
         this.invoiceRepository = invoiceRepository;
         this.clientRepository = clientRepository;
         this.invoiceMapper = invoiceMapper;
+        this.lineItemMapper = lineItemMapper;
     }
 
     private String generateReference() {
@@ -61,7 +63,18 @@ public class InvoiceServiceImpl implements InvoiceService {
             Client c = clientRepository.findByEmail(dto.getClientEmail()).orElseThrow(() -> new RuntimeException("Client not found"));
             inv.setClient(c);
         }
-        // items handled elsewhere or by cascade from dto mapping
+        
+        // Handle Line Items
+        if (dto.getItems() != null) {
+            for (var itemDto : dto.getItems()) {
+                var item = lineItemMapper.toEntity(itemDto);
+                if (item != null) {
+                    item.recalcLineTotal(); // Ensure total is calculated
+                    inv.addLineItem(item);
+                }
+            }
+        }
+        
         Invoice saved = invoiceRepository.save(inv);
         return invoiceMapper.toResponseDto(saved);
     }
@@ -80,6 +93,19 @@ public class InvoiceServiceImpl implements InvoiceService {
             Client c = clientRepository.findByEmail(dto.getClientEmail()).orElseThrow(() -> new RuntimeException("Client not found"));
             existing.setClient(c);
         }
+
+        // Handle Line Items Update
+        if (dto.getItems() != null) {
+            existing.getLineItems().clear(); // Clear existing items
+            for (var itemDto : dto.getItems()) {
+                var item = lineItemMapper.toEntity(itemDto);
+                if (item != null) {
+                    item.recalcLineTotal();
+                    existing.addLineItem(item);
+                }
+            }
+        }
+
         Invoice saved = invoiceRepository.save(existing);
         return invoiceMapper.toResponseDto(saved);
     }

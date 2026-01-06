@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { PaymentResponse, PaymentRequest } from '../shared/models';
-import { createInitialStore } from '../mocks/mock-data';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  private store = createInitialStore();
-  private subject = new BehaviorSubject<PaymentResponse[]>(this.store.payments);
+  private apiUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<PaymentResponse[]> {
-    return this.subject.asObservable();
+    // Use backend global payments endpoint if available
+    return this.http.get<PaymentResponse[]>(`${this.apiUrl}/payments`);
   }
 
-  getByInvoice(reference: string): Observable<PaymentResponse[]> {
-    return of(this.store.payments.filter((p) => p.invoiceReference === reference));
+  getByInvoice(invoiceId: string): Observable<PaymentResponse[]> {
+    return this.http.get<PaymentResponse[]>(`${this.apiUrl}/invoices/${invoiceId}/payments`);
   }
 
   create(pay: PaymentRequest): Observable<PaymentResponse> {
-    const newP: PaymentResponse = { invoiceReference: pay.invoiceReference || '', amount: pay.amount, date: pay.date || new Date().toISOString(), method: pay.method, reference: pay.reference };
-    this.store.payments.push(newP);
-    this.subject.next(this.store.payments);
-    return of(newP);
+    if (!pay.invoiceId) {
+      throw new Error('Invoice ID is required');
+    }
+    return this.http.post<PaymentResponse>(`${this.apiUrl}/invoices/${pay.invoiceId}/payments`, pay);
   }
 
-  deleteByReference(reference: string): Observable<void> {
-    this.store.payments = this.store.payments.filter((p) => p.reference !== reference);
-    this.subject.next(this.store.payments);
-    return of(undefined);
+  delete(invoiceId: string, id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/invoices/${invoiceId}/payments/${id}`);
   }
 }

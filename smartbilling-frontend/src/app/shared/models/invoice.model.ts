@@ -1,5 +1,6 @@
 import { ClientResponse } from './client.model';
 import { LineItemRequest, LineItemResponse } from './line-item.model';
+import { PaymentResponse } from './payment.model';
 
 export interface InvoiceRequest {
   id?: string;
@@ -17,5 +18,6 @@ export interface InvoiceResponse {
   client?: ClientResponse;
   invoiceDate?: string;
   items?: LineItemResponse[];
+  payments?: PaymentResponse[];
   total?: number;
 }

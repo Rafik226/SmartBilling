@@ -19,8 +19,16 @@ export class ClientDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || undefined;
-    if (this.id) {
-      this.clientService.getById(this.id).subscribe((c) => (this.client = c));
+    if (this.id) {             
+      this.clientService.getById(this.id).subscribe({
+        next: (c) => {
+          console.log('Client loaded:', c);
+          this.client = c;
+        },
+        error: (err) => {
+          console.error('Failed to load client', err);
+        }
+      });
     }
   }
 

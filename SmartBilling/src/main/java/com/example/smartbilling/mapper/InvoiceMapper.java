@@ -2,6 +2,7 @@ package com.example.smartbilling.mapper;
 
 import com.example.smartbilling.dto.InvoiceResponseDto;
 import com.example.smartbilling.dto.LineItemResponseDto;
+import com.example.smartbilling.dto.PaymentResponseDto;
 import com.example.smartbilling.entity.Invoice;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +14,17 @@ import java.util.stream.Collectors;
 public class InvoiceMapper {
 
     private final LineItemMapper lineItemMapper;
+    private final PaymentMapper paymentMapper;
 
-    public InvoiceMapper(LineItemMapper lineItemMapper) {
+    public InvoiceMapper(LineItemMapper lineItemMapper, PaymentMapper paymentMapper) {
         this.lineItemMapper = lineItemMapper;
+        this.paymentMapper = paymentMapper;
     }
 
     public InvoiceResponseDto toResponseDto(Invoice entity) {
         if (entity == null) return null;
         InvoiceResponseDto dto = new InvoiceResponseDto();
+        dto.setId(entity.getId());
         dto.setReference(entity.getNumber());
         // map client minimally
         if (entity.getClient() != null) {
@@ -37,6 +41,12 @@ public class InvoiceMapper {
                 .map(lineItemMapper::toResponseDto)
                 .collect(Collectors.toList());
         dto.setItems(items);
+
+        if (entity.getPayments() != null) {
+            dto.setPayments(entity.getPayments().stream()
+                    .map(paymentMapper::toResponseDto)
+                    .collect(Collectors.toList()));
+        }
 
         BigDecimal total = items.stream()
                 .map(i -> i.getLineTotal() != null ? i.getLineTotal() : BigDecimal.ZERO)

@@ -17,24 +17,32 @@ export class ClientListComponent implements OnInit {
   constructor(private clientService: ClientService, private router: Router) {}
 
   ngOnInit(): void {
-    this.clientService.getAll().subscribe((c) => (this.clients = c));
+    this.clientService.getAll().subscribe({
+      next: (c) => {
+        this.clients = c;
+        console.log('Clients loaded:', c);
+      },
+      error: (err) => {
+        console.error('Failed to load clients', err);
+      }
+    });
   }
 
   viewClient(id?: string) {
     console.log('viewClient', id);
     if (!id) return;
-    this.router.navigateByUrl(`/clients/${id}`);
+    this.router.navigate(['/clients', id]);
   }
 
   edit(id?: string) {
     console.log('edit client', id);
     if (!id) return;
-    this.router.navigateByUrl(`/clients/${id}/edit`);
+    this.router.navigate(['/clients', id, 'edit']);
   }
 
   create() {
     console.log('create client');
-    this.router.navigateByUrl('/clients/new');
+    this.router.navigate(['/clients', 'new']);
   }
 
   delete(id?: string) {

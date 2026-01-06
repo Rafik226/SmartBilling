@@ -15,5 +15,7 @@ public interface PaymentService {
     void delete(Long id);
 
     PaymentResponseDto findByReference(String reference);
+
+    List<PaymentResponseDto> findAll();
 }
 

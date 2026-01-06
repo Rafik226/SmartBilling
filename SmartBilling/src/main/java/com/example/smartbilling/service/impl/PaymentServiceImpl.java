@@ -60,6 +60,14 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<PaymentResponseDto> findAll() {
+        return paymentRepository.findAll().stream()
+                .map(paymentMapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public PaymentResponseDto findByReference(String reference) {
         return paymentRepository.findByReference(reference).map(paymentMapper::toResponseDto).orElseThrow(() -> new RuntimeException("Payment not found: " + reference));
     }

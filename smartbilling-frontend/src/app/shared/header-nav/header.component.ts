@@ -13,9 +13,10 @@ import { User } from '../../shared/models/user.model';
   imports: [CommonModule, RouterModule]
 })
 export class HeaderComponent {
-  private auth = inject(AuthService);
+  public auth = inject(AuthService);
   private router = inject(Router);
   userSignal = this.auth.currentUser$(); // Signal<User | null>
+  isAdmin = this.auth.isAdmin;
 
   // UI state signals
   menuOpen = signal(false);

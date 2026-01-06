@@ -36,6 +36,15 @@ public class DataInitializer implements CommandLineRunner {
             dto.setEmail("admin@example.com");
             dto.setRoles(new String[]{"ROLE_ADMIN"});
             userService.createUser(dto);
+        } else {
+            // Ensure admin has ROLE_ADMIN
+            userRepository.findByUsername("admin").ifPresent(u -> {
+                boolean hasAdmin = u.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+                if (!hasAdmin) {
+                    roleRepository.findByName("ROLE_ADMIN").ifPresent(u::addRole);
+                    userRepository.save(u);
+                }
+            });
         }
     }
 }

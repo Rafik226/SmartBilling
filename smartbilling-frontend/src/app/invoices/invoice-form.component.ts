@@ -82,14 +82,13 @@ export class InvoiceFormComponent implements OnInit {
 
     const req: InvoiceRequest = {
       id: this.model.id,
-      reference: this.model.reference,
       invoiceDate: this.model.invoiceDate,
       items: itemsReq,
       clientId: this.clientId,
     };
 
     if (this.id && this.id !== 'new') {
-      this.invoiceService.updateById(this.id, { ...this.model, client: this.model.client }).subscribe(() => this.router.navigate(['/invoices']));
+      this.invoiceService.updateById(this.id, req).subscribe(() => this.router.navigate(['/invoices']));
     } else {
       this.invoiceService.create(req).subscribe(() => this.router.navigate(['/invoices']));
     }

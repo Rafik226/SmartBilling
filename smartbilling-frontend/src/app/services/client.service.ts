@@ -1,40 +1,31 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { ClientResponse, ClientRequest } from '../shared/models';
-import { createInitialStore } from '../mocks/mock-data';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
-  private store = createInitialStore();
-  private subject = new BehaviorSubject<ClientResponse[]>(this.store.clients);
+  private apiUrl = 'http://localhost:8080/api/clients';
+
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<ClientResponse[]> {
-    return this.subject.asObservable();
+    return this.http.get<ClientResponse[]>(this.apiUrl);
   }
 
-  getById(id: string): Observable<ClientResponse | undefined> {
-    return of(this.store.clients.find((c) => c.id === id));
+  getById(id: string): Observable<ClientResponse> {
+    return this.http.get<ClientResponse>(`${this.apiUrl}/${id}`);
   }
 
   create(client: ClientRequest): Observable<ClientResponse> {
-    const id = 'c' + Date.now();
-    const newC: ClientResponse = { ...client, id } as ClientResponse;
-    this.store.clients.push(newC);
-    this.subject.next(this.store.clients);
-    return of(newC);
+    return this.http.post<ClientResponse>(this.apiUrl, client);
   }
 
-  update(id: string, client: Partial<ClientResponse>): Observable<ClientResponse | undefined> {
-    const idx = this.store.clients.findIndex((c) => c.id === id);
-    if (idx === -1) return of(undefined);
-    this.store.clients[idx] = { ...this.store.clients[idx], ...client } as ClientResponse;
-    this.subject.next(this.store.clients);
-    return of(this.store.clients[idx]);
+  update(id: string, client: Partial<ClientRequest>): Observable<ClientResponse> {
+    return this.http.put<ClientResponse>(`${this.apiUrl}/${id}`, client);
   }
 
   delete(id: string): Observable<void> {
-    this.store.clients = this.store.clients.filter((c) => c.id !== id);
-    this.subject.next(this.store.clients);
-    return of(undefined);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -23,6 +23,8 @@ public class Client {
 
     private String address;
 
+    private String company;
+
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Invoice> invoices = new ArrayList<>();
 
@@ -74,6 +76,14 @@ public class Client {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public List<Invoice> getInvoices() {

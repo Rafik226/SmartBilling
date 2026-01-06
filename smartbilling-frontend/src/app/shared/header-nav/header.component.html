@@ -12,7 +12,7 @@
         <a routerLink="/clients" class="px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition">Clients</a>
         <a routerLink="/invoices" class="px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition">Factures</a>
         <a routerLink="/payments" class="px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition">Paiements</a>
-        <a routerLink="/users" class="px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition">Utilisateurs</a>
+        <a *ngIf="isAdmin()" routerLink="/users" class="px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition">Utilisateurs</a>
       </nav>
       <div class="flex items-center gap-3">
         <ng-container *ngIf="userSignal(); else loginBtn">
@@ -43,7 +43,7 @@
         <a class="px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition" routerLink="/clients" (click)="closeMenus()">Clients</a>
         <a class="px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition" routerLink="/invoices" (click)="closeMenus()">Factures</a>
         <a class="px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition" routerLink="/payments" (click)="closeMenus()">Paiements</a>
-        <a class="px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition" routerLink="/users" (click)="closeMenus()">Utilisateurs</a>
+        <a *ngIf="isAdmin()" class="px-3 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition" routerLink="/users" (click)="closeMenus()">Utilisateurs</a>
       </nav>
     </div>
   </div>

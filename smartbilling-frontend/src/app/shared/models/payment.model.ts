@@ -1,4 +1,5 @@
 export interface PaymentRequest {
+  invoiceId?: string;
   invoiceReference?: string;
   amount: number;
   date: string; // ISO date string

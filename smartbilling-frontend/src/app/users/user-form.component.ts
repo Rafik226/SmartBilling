@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserApiService } from '../services/user-api.service';
+import { User, UserCreateDto } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-user-form',
@@ -20,17 +21,31 @@ export class UserFormComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private userApi: UserApiService) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.isEdit = !!id;
-    if (this.isEdit && id) {
+    const idStr = this.route.snapshot.paramMap.get('id');
+    this.isEdit = !!idStr;
+    if (this.isEdit && idStr) {
       this.loading = true;
+      const id = +idStr;
       this.userApi.getById(id).subscribe({
         next: (user) => {
           this.model = { ...user };
+          // Ensure roles is an array
+          if (!this.model.roles) {
+            this.model.roles = [];
+          }
           this.loading = false;
         },
         error: () => { this.loading = false; }
       });
+    } else {
+      // Initialize for create
+      this.model = {
+        username: '',
+        password: '',
+        fullName: '',
+        email: '',
+        roles: ['ROLE_USER'] // Default role
+      };
     }
   }
 
@@ -49,7 +64,14 @@ export class UserFormComponent implements OnInit {
         }
       });
     } else {
-      this.userApi.create(this.model).subscribe({
+      const createUser: UserCreateDto = {
+        username: this.model.username,
+        password: this.model.password,
+        fullName: this.model.fullName,
+        email: this.model.email,
+        roles: this.model.roles
+      };
+      this.userApi.create(createUser).subscribe({
         next: () => {
           this.loading = false;
           this.router.navigate(['/users']);

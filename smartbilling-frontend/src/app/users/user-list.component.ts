@@ -3,14 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserApiService } from '../services/user-api.service';
-
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  roles: string[];
-  status?: 'actif' | 'inactif';
-}
+import { User } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-user-list',
@@ -61,16 +54,16 @@ export class UserListComponent implements OnInit {
     return Math.ceil(this.filteredUsers.length / this.pageSize) || 1;
   }
 
-  view(id: string) {
+  view(id: number) {
     this.router.navigate(['/users', id]);
   }
-  edit(id: string) {
+  edit(id: number) {
     this.router.navigate(['/users', id, 'edit']);
   }
   create() {
     this.router.navigate(['/users', 'new']);
   }
-  delete(id: string) {
+  delete(id: number) {
     if (confirm('Voulez-vous vraiment supprimer cet utilisateur ?')) {
       this.userApi.delete(id).subscribe(() => {
         this.fetchUsers();

@@ -15,7 +15,7 @@ import { InvoiceResponse } from '../shared/models';
   styleUrls: ['./payment-form.component.css']
 })
 export class PaymentFormComponent implements OnInit {
-  model: Partial<PaymentRequest> = { date: new Date().toISOString(), method: 'Virement' };
+  model: Partial<PaymentRequest> = { date: new Date().toISOString(), method: 'BANK_TRANSFER' };
   invoices: InvoiceResponse[] = [];
 
   constructor(private paymentService: PaymentService, private invoiceService: InvoiceService, private route: ActivatedRoute, private router: Router) {}
@@ -25,7 +25,17 @@ export class PaymentFormComponent implements OnInit {
   }
 
   save() {
-    this.paymentService.create(this.model as PaymentRequest).subscribe(() => this.router.navigate(['/payments']));
+    if (!this.model.invoiceId) {
+      alert('Veuillez sélectionner une facture.');
+      return;
+    }
+    this.paymentService.create(this.model as PaymentRequest).subscribe({
+      next: () => this.router.navigate(['/payments']),
+      error: (err) => {
+        console.error('Erreur création paiement', err);
+        alert('Erreur lors de la création du paiement: ' + err.message);
+      }
+    });
   }
 
   goToPayments() {

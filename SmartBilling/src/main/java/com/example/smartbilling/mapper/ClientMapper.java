@@ -15,17 +15,19 @@ public class ClientMapper {
         entity.setEmail(dto.getEmail());
         entity.setPhone(dto.getPhone());
         entity.setAddress(dto.getAddress());
-        // company is stored in address/company depending on entity design; here we set address
+        entity.setCompany(dto.getCompany());
         return entity;
     }
 
     public ClientResponseDto toResponseDto(Client entity) {
         if (entity == null) return null;
         ClientResponseDto dto = new ClientResponseDto();
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setEmail(entity.getEmail());
         dto.setPhone(entity.getPhone());
-        dto.setCompany(entity.getAddress());
+        dto.setCompany(entity.getCompany());
+        dto.setAddress(entity.getAddress());
         return dto;
     }
 }

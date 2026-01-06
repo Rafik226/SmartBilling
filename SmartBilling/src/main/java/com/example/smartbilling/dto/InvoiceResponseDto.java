@@ -11,13 +11,23 @@ import com.example.smartbilling.dto.LineItemResponseDto;
  * Représentation renvoyée d'une facture. N'expose pas des IDs sensibles d'entités internes autres que l'id de la facture si nécessaire.
  */
 public class InvoiceResponseDto {
+    private Long id;
     private String reference;
     private ClientResponseDto client;
     private LocalDate invoiceDate;
     private List<LineItemResponseDto> items;
+    private List<PaymentResponseDto> payments;
     private BigDecimal total;
 
     public InvoiceResponseDto() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getReference() {
@@ -50,6 +60,14 @@ public class InvoiceResponseDto {
 
     public void setItems(List<LineItemResponseDto> items) {
         this.items = items;
+    }
+
+    public List<PaymentResponseDto> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<PaymentResponseDto> payments) {
+        this.payments = payments;
     }
 
     public BigDecimal getTotal() {

@@ -29,8 +29,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@jakarta.validation.Valid @RequestBody AuthRequest request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            String token = jwtUtil.generateToken(request.getUsername());
+            org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            java.util.List<String> roles = authentication.getAuthorities().stream()
+                .map(org.springframework.security.core.GrantedAuthority::getAuthority)
+                .collect(java.util.stream.Collectors.toList());
+            String token = jwtUtil.generateToken(request.getUsername(), roles);
             return ResponseEntity.ok(new AuthResponse(token));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(401).body(new AuthResponse(""));

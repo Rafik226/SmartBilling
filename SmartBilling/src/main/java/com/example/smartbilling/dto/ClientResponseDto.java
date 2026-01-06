@@ -1,12 +1,22 @@
 package com.example.smartbilling.dto;
 
 public class ClientResponseDto {
+    private Long id;
     private String name;
     private String email;
     private String phone;
     private String company;
+    private String address;
 
     public ClientResponseDto() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,5 +49,13 @@ public class ClientResponseDto {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

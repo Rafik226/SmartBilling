@@ -1,5 +1,17 @@
 export interface User {
-  username?: string;
+  id?: number;
+  username: string;
+  password?: string; // Required for creation, optional for display/update if not changing
+  fullName: string;
+  email: string;
   roles?: string[];
-  sub?: string; // Ajouté pour compatibilité JWT (subject)
+  sub?: string;
+}
+
+export interface UserCreateDto {
+  username: string;
+  password: string;
+  fullName: string;
+  email: string;
+  roles?: string[];
 }

@@ -41,6 +41,11 @@ export class AuthService {
     return computed(() => this.userSignal());
   }
 
+  isAdmin = computed(() => {
+    const user = this.userSignal();
+    return user && user.roles && user.roles.includes('ROLE_ADMIN');
+  });
+
   get currentUserValue() {
     return this.userSignal();
   }
