@@ -2,7 +2,6 @@ package com.example.smartbilling.mapper;
 
 import com.example.smartbilling.dto.InvoiceResponseDto;
 import com.example.smartbilling.dto.LineItemResponseDto;
-import com.example.smartbilling.dto.PaymentResponseDto;
 import com.example.smartbilling.entity.Invoice;
 import org.springframework.stereotype.Component;
 
